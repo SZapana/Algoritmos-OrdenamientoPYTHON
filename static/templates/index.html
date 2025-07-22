@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OrderAlgorithm - Visualizador de Algoritmos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Source+Code+Pro:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="../css/style.css" media="none" onload="if(media!='all')media='all'">
+    <noscript><link rel="stylesheet" href="../css/style.css"></noscript>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <i class="fas fa-sort-amount-down-alt logo-icon"></i>
+            <h1>OrderAlgorithm</h1>
+        </div>
+        <nav class="nav-links">
+            <a href="#comparator"><i class="fas fa-chart-bar"></i> Comparador</a>
+            <a href="#live-simulation"><i class="fas fa-play-circle"></i> Simulación en Vivo</a>
+            <a href="#algorithms"><i class="fas fa-code"></i> Algoritmos</a>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h2>Visualización de Algoritmos de Ordenamiento</h2>
+            <p>Explora, compara y comprende el rendimiento de diferentes algoritmos con visualizaciones interactivas y análisis en tiempo real</p>
+            <div class="hero-btns">
+                <a href="#comparator" class="btn btn-primary"><i class="fas fa-play"></i> Comenzar</a>
+                <a href="#live-simulation" class="btn btn-secondary"><i class="fas fa-bolt"></i> Simulación en Vivo</a>
+            </div>
+        </div>
+        <div class="hero-image">
+            <div class="algorithm-visualization">
+                <div class="bar" style="height: 30%; background: #3498db;"></div>
+                <div class="bar" style="height: 70%; background: #2ecc71;"></div>
+                <div class="bar" style="height: 50%; background: #e74c3c;"></div>
+                <div class="bar" style="height: 90%; background: #f39c12;"></div>
+                <div class="bar" style="height: 20%; background: #9b59b6;"></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="comparator" class="comparator-section">
+        <h2 class="section-title">Comparador de Algoritmos</h2>
+        
+        <div class="controls">
+            <div class="control-group">
+                <h3><i class="fas fa-sliders-h"></i> Configuración</h3>
+                <div class="input-group">
+                    <label for="arraySize">Tamaño del Arreglo</label>
+                    <input type="range" id="arraySize" min="10" max="10000" value="1000">
+                    <span id="sizeValue">1000 elementos</span>
+                </div>
+                <div class="input-group">
+                    <label for="arrayType">Tipo de Datos</label>
+                    <select id="arrayType">
+                        <option value="random">Aleatorio</option>
+                        <option value="sorted">Ordenado</option>
+                        <option value="reversed">Invertido</option>
+                        <option value="nearly_sorted">Casi Ordenado</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <h3><i class="fas fa-tasks"></i> Algoritmos</h3>
+                <div class="algorithms-list">
+                    <label class="algorithm-checkbox">
+                        <input type="checkbox" name="algorithm" value="bubble" checked>
+                        <div class="checkbox-custom"></div>
+                        Bubble Sort
+                    </label>
+                    <label class="algorithm-checkbox">
+                        <input type="checkbox" name="algorithm" value="insertion" checked>
+                        <div class="checkbox-custom"></div>
+                        Insertion Sort
+                    </label>
+                    <label class="algorithm-checkbox">
+                        <input type="checkbox" name="algorithm" value="selection" checked>
+                        <div class="checkbox-custom"></div>
+                        Selection Sort
+                    </label>
+                    <label class="algorithm-checkbox">
+                        <input type="checkbox" name="algorithm" value="merge" checked>
+                        <div class="checkbox-custom"></div>
+                        Merge Sort
+                    </label>
+                    <label class="algorithm-checkbox">
+                        <input type="checkbox" name="algorithm" value="quick" checked>
+                        <div class="checkbox-custom"></div>
+                        Quick Sort
+                    </label>
+                </div>
+            </div>
+        </div>
+        
+        <button id="executeBtn" class="execute-btn">
+            <i class="fas fa-bolt"></i> Ejecutar Comparación
+        </button>
+        
+        <div class="results">
+            <div class="chart-container">
+                <h3>Comparación de Tiempos</h3>
+                <div class="chart-wrapper">
+                    <canvas id="timeChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="algorithm-info">
+                <h3>Información del Algoritmo</h3>
+                <div class="algo-stats">
+                    <div class="stat-card">
+                        <h4>Tamaño</h4>
+                        <p id="currentSize">1000</p>
+                    </div>
+                    <div class="stat-card">
+                        <h4>Mejor Tiempo</h4>
+                        <p id="bestTime">0.00 ms</p>
+                    </div>
+                    <div class="stat-card">
+                        <h4>Algoritmo Más Rápido</h4>
+                        <p id="fastestAlgo">-</p>
+                    </div>
+                </div>
+                
+                <div class="algo-code">
+                    <div class="code-header">
+                        <h4>Código del Algoritmo</h4>
+                        <button class="copy-btn"><i class="fas fa-copy"></i> Copiar</button>
+                    </div>
+                    <pre id="algorithmCode">Selecciona un algoritmo para ver su implementación</pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="live-simulation" class="live-simulation">
+        <h2 class="section-title">Simulación en Vivo</h2>
+        <p class="section-subtitle">Visualiza cómo trabajan los algoritmos paso a paso</p>
+        
+        <div class="simulation-controls">
+            <div class="input-group">
+                <label for="simulationSize">Tamaño del Arreglo</label>
+                <input type="range" id="simulationSize" min="5" max="50" value="20">
+                <span id="simulationSizeValue">20 elementos</span>
+            </div>
+            
+            <div class="input-group">
+                <label for="simulationSpeed">Velocidad</label>
+                <input type="range" id="simulationSpeed" min="1" max="10" value="5">
+                <span id="simulationSpeedValue">Media</span>
+            </div>
+            
+            <div class="input-group">
+                <label for="simulationAlgorithm">Algoritmo</label>
+                <select id="simulationAlgorithm">
+                    <option value="bubble">Bubble Sort</option>
+                    <option value="insertion">Insertion Sort</option>
+                    <option value="selection">Selection Sort</option>
+                    <option value="merge">Merge Sort</option>
+                    <option value="quick">Quick Sort</option>
+                </select>
+            </div>
+            
+            <button id="startSimulation" class="btn btn-primary">
+                <i class="fas fa-play"></i> Iniciar Simulación
+            </button>
+        </div>
+        
+        <div class="simulation-container">
+            <div class="visualization">
+                <div id="arrayVisualization" class="array-visualization"></div>
+                <div class="algorithm-stats">
+                    <div class="stat">Comparaciones: <span id="comparisonCount">0</span></div>
+                    <div class="stat">Intercambios: <span id="swapCount">0</span></div>
+                    <div class="stat">Tiempo: <span id="simulationTime">0.00</span> ms</div>
+                </div>
+            </div>
+            
+            <div class="algorithm-description">
+                <h3>Proceso del Algoritmo</h3>
+                <div id="algorithmProcess" class="process-steps">
+                    <p>Selecciona un algoritmo y haz clic en "Iniciar Simulación" para comenzar</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="algorithms" class="algorithms-section">
+        <h2 class="section-title">Algoritmos de Ordenamiento</h2>
+        
+        <div class="algorithm-cards">
+            <div class="algo-card">
+                <div class="algo-header bubble">
+                    <h3>Bubble Sort</h3>
+                </div>
+                <div class="algo-body">
+                    <div class="complexity">
+                        <div class="complexity-item best">
+                            <h4>Mejor</h4>
+                            <p>O(n)</p>
+                        </div>
+                        <div class="complexity-item average">
+                            <h4>Promedio</h4>
+                            <p>O(n²)</p>
+                        </div>
+                        <div class="complexity-item worst">
+                            <h4>Peor</h4>
+                            <p>O(n²)</p>
+                        </div>
+                    </div>
+                    <p>Compara elementos adyacentes y los intercambia si están en el orden incorrecto.</p>
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> Simple de implementar</li>
+                        <li><i class="fas fa-check-circle"></i> Bueno para pequeños conjuntos</li>
+                        <li><i class="fas fa-times-circle"></i> Ineficiente para grandes conjuntos</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="algo-card">
+                <div class="algo-header insertion">
+                    <h3>Insertion Sort</h3>
+                </div>
+                <div class="algo-body">
+                    <div class="complexity">
+                        <div class="complexity-item best">
+                            <h4>Mejor</h4>
+                            <p>O(n)</p>
+                        </div>
+                        <div class="complexity-item average">
+                            <h4>Promedio</h4>
+                            <p>O(n²)</p>
+                        </div>
+                        <div class="complexity-item worst">
+                            <h4>Peor</h4>
+                            <p>O(n²)</p>
+                        </div>
+                    </div>
+                    <p>Construye la secuencia final un elemento a la vez insertando cada elemento en su posición correcta.</p>
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> Eficiente para pequeños conjuntos</li>
+                        <li><i class="fas fa-check-circle"></i> Estable (no cambia orden iguales)</li>
+                        <li><i class="fas fa-times-circle"></i> Ineficiente para grandes conjuntos</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="algo-card">
+                <div class="algo-header selection">
+                    <h3>Selection Sort</h3>
+                </div>
+                <div class="algo-body">
+                    <div class="complexity">
+                        <div class="complexity-item best">
+                            <h4>Mejor</h4>
+                            <p>O(n²)</p>
+                        </div>
+                        <div class="complexity-item average">
+                            <h4>Promedio</h4>
+                            <p>O(n²)</p>
+                        </div>
+                        <div class="complexity-item worst">
+                            <h4>Peor</h4>
+                            <p>O(n²)</p>
+                        </div>
+                    </div>
+                    <p>Divide el arreglo en una parte ordenada y otra no ordenada, seleccionando repetidamente el mínimo elemento.</p>
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> Simple implementación</li>
+                        <li><i class="fas fa-check-circle"></i> Bajo uso de memoria</li>
+                        <li><i class="fas fa-times-circle"></i> Lento para grandes conjuntos</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="algo-card">
+                <div class="algo-header merge">
+                    <h3>Merge Sort</h3>
+                </div>
+                <div class="algo-body">
+                    <div class="complexity">
+                        <div class="complexity-item best">
+                            <h4>Mejor</h4>
+                            <p>O(n log n)</p>
+                        </div>
+                        <div class="complexity-item average">
+                            <h4>Promedio</h4>
+                            <p>O(n log n)</p>
+                        </div>
+                        <div class="complexity-item worst">
+                            <h4>Peor</h4>
+                            <p>O(n log n)</p>
+                        </div>
+                    </div>
+                    <p>Divide el arreglo en mitades, las ordena recursivamente y luego combina las mitades ordenadas.</p>
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> Eficiente para grandes conjuntos</li>
+                        <li><i class="fas fa-check-circle"></i> Estable (no cambia orden iguales)</li>
+                        <li><i class="fas fa-times-circle"></i> Requiere espacio adicional</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="algo-card">
+                <div class="algo-header quick">
+                    <h3>Quick Sort</h3>
+                </div>
+                <div class="algo-body">
+                    <div class="complexity">
+                        <div class="complexity-item best">
+                            <h4>Mejor</h4>
+                            <p>O(n log n)</p>
+                        </div>
+                        <div class="complexity-item average">
+                            <h4>Promedio</h4>
+                            <p>O(n log n)</p>
+                        </div>
+                        <div class="complexity-item worst">
+                            <h4>Peor</h4>
+                            <p>O(n²)</p>
+                        </div>
+                    </div>
+                    <p>Selecciona un 'pivote', particiona el arreglo alrededor del pivote, y ordena recursivamente las particiones.</p>
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> Muy eficiente en la práctica</li>
+                        <li><i class="fas fa-check-circle"></i> Ordenamiento en el lugar</li>
+                        <li><i class="fas fa-times-circle"></i> Peor caso O(n²) (raro)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <i class="fas fa-sort-amount-down-alt"></i>
+                <span>OrderAlgorithm</span>
+            </div>
+            <p>Plataforma educativa para visualizar y comprender algoritmos de ordenamiento</p>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-github"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+            <div class="copyright">
+                &copy; 2026 SZapana - Todos los derechos reservados
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/script.js"></script>
+</body>
+</html>
